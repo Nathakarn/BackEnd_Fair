@@ -16,5 +16,9 @@ const port = process.env.PORT || 8080;
 app.listen(port, () => console.log("Server on", port));
 
 console.log(port);
+<<<<<<< HEAD
 console.log('q');
 console.log('k');
+=======
+console.log("Mix");
+>>>>>>> e8ab91af28f8558288da3db924276172f6c4eb66
