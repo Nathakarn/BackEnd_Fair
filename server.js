@@ -14,6 +14,7 @@ app.use('/product2')
 app.use('/product3')
 app.use('/product4')
 app.use('/product5')
+app.use('/product6')
 
 
 const port = process.env.PORT || 8080;
