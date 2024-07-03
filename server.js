@@ -17,3 +17,12 @@ app.listen(port, () => console.log("Server on", port));
 
 console.log(port);
 console.log("Mix");
+console.log("Max");
+console.log("Min");
+console.log("lolo");
+console.log("Max");
+console.log("Min");
+console.log("lolo");
+console.log("Max");
+console.log("Min");
+console.log("lolo");
