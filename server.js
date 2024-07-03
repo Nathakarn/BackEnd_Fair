@@ -9,7 +9,11 @@ app.use(cors())
 app.use(express.json());
 
 //service
-app.use('/product', productRoute)
+app.use('/product1', productRoute)
+app.use('/product2')
+app.use('/product3')
+app.use('/product4')
+app.use('/product5')
 
 
 const port = process.env.PORT || 8080;
