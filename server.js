@@ -26,3 +26,5 @@ console.log("lolo");
 console.log("Max");
 console.log("Min");
 console.log("lolo");
+
+console.log('qqqhaha');
