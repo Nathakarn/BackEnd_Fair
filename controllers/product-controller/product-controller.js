@@ -1,11 +1,14 @@
-const productRoute = require('../../routes/product-route/product-route')
+const productRoute = require("../../routes/product-route/product-route");
+const customError = require("../../utils/customError");
+const tryCatch = require("../../utils/tryCatch");
+const prisma = require("../../models");
 
+module.exports.createProduct = tryCatch(async (req, res, next) => {
+  const { name } = req.body;
 
-module.exports.createProduct = (async (req,res,next) => {
-    try {
-        // Add your product creation logic here
-        res.json({ msg: 'create Product done' });
-    } catch (error) {
-        next(error);
-    }
-  })
+  if (!name) {
+    throw customError("name not found", 400);
+  }
+
+  res.json({ msg: "create Product done" });
+});
