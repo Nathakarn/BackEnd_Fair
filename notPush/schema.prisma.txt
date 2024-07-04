@@ -13,11 +13,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  user_id      Int     @id @default(autoincrement())
-  username     String  @unique @db.VarChar(20)
-  password     String  @db.VarChar(72)
-  email        String  @db.VarChar(99)
-  phone_number String  @db.VarChar(10)
-  profile_pic  String? @map("img_url")
+model Address {
+  address_id Int     @id @default(autoincrement())
+  name       String  @db.VarChar(70)
+  address    String  @db.VarChar(300)
+  province   String  @db.VarChar(300)
+  district   String  @db.VarChar(10)
+  phone      String  @db.VarChar(10)
+  email      String? @db.VarChar(99)
+  orders     Order[] // Relation to Order model
+}
+
+model Order {
+  order_id        Int           @id @default(autoincrement())
+  payment_status  String        @db.VarChar(100)
+  shipping_status String        @db.VarChar(100)
+  payment_method  String        @db.VarChar(100)
+  address_id      Int
+  user_id         Int
+  product_id      Int
+  address         Address       @relation(fields: [address_id], references: [address_id])
 }
