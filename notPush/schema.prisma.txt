@@ -21,3 +21,22 @@ model User {
   phone_number String  @db.VarChar(10)
   profile_pic  String? @map("img_url")
 }
+
+model Product {
+  product_id       Int         @id @default(autoincrement())
+  product_title    String      @unique @db.VarChar(30)
+  description      String      @db.Text
+  price            Float       @db.Float
+  wholesaler_price Float       @db.Float
+  category         String
+  product_pic      String      @map("product_pic_url")
+  product_video    String      @map("product_video_url")
+  product_type     ProductType 
+  stores           Store[]
+  orders           Order[]
+}
+
+enum ProductType {
+  Normal
+  PreOrder
+}
