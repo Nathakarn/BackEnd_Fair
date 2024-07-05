@@ -6,14 +6,15 @@ const productRoute = require("./routes/product-route/product-route");
 const notFound = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error-middleware");
 
+
 //middlewares
 app.use(cors());
 app.use(express.json());
 // app.use(cookieParser());
 
+
 //service
 app.use("/product", productRoute);
-app.use("/user", userRoute);
 
 // not found
 app.use(notFound);
