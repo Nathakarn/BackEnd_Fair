@@ -12,6 +12,18 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+
+model User {
+  user_id       Int         @id @default(autoincrement())
+  username      String      @unique @db.VarChar(20)
+  password      String      @db.VarChar(72)
+  email         String      @db.VarChar(99)
+  phone_number  String      @db.VarChar(10)
+  profile_pic   String?     @map("img_url")
+}
+
+
 //qq
 model Address {
   address_id Int     @id @default(autoincrement())
