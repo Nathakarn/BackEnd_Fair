@@ -14,10 +14,10 @@ app.use(cors());
 app.use(express.json());
 // app.use(cookieParser());
 
-
 //service
 app.use("/product", productRoute);
 app.use("/address", addressRoute);
+// app.use("/user", userRoute);
 
 // not found
 app.use(notFound);
