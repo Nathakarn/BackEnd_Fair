@@ -118,55 +118,121 @@ const populateConversation = async (id, include) => {
 };
 
 const getUserConversations = async (user_id) => {
-  const conversations = await prisma.conversation.findMany({
-    where: {
-      users: {
-        some: {
-          id: user_id,
+  try {
+    const conversations = await prisma.conversation.findMany({
+      where: {
+        users: {
+          some: {
+            userId: parseInt(user_id),
+          },
         },
       },
-    },
-    include: {
-      users: {
-        select: {
-          id: true,
-          name: true,
-          picture: true,
-          email: true,
-          status: true,
+      include: {
+        users: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                picture: true,
+                email: true,
+                status: true,
+              },
+            },
+          },
         },
-      },
-      admin: {
-        select: {
-          id: true,
-          name: true,
-          picture: true,
-          email: true,
-          status: true,
-        },
-      },
-      latestMessage: {
-        include: {
-          sender: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-              picture: true,
-              status: true,
+        admin: {
+          select: {
+            id: true,
+            name: true,
+            picture: true,
+            email: true,
+            status: true,
+          },
+        }, //remove
+        latestMessage: {
+          include: {
+            sender: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                picture: true,
+                status: true,
+              }, //edit more
             },
           },
         },
       },
-    },
-    orderBy: { updatedAt: "desc" },
-  });
+      orderBy: {
+        updatedAt: "desc",
+      },
+    });
 
-  if (!conversations.length)
-    throw createHttpError.BadRequest("Oops...Something went wrong !");
+    if (!conversations) {
+      throw customError(
+        "Oops...Something went wrong process getUserConversations",
+        400
+      );
+    }
 
-  return conversations;
+    return conversations;
+  } catch (error) {
+    console.error("Error getting user conversations: ", error);
+    throw customError("Oops...Something went wrong getUserConversations", 400);
+  }
 };
+
+// const getUserConversations = async (user_id) => {
+//   const conversations = await prisma.conversation.findMany({
+//     where: {
+//       users: {
+//         some: {
+//           id: user_id,
+//         },
+//       },
+//     },
+//     include: {
+//       users: {
+//         select: {
+//           id: true,
+//           name: true,
+//           picture: true,
+//           email: true,
+//           status: true,
+//         },
+//       },
+//       admin: {
+//         select: {
+//           id: true,
+//           name: true,
+//           picture: true,
+//           email: true,
+//           status: true,
+//         },
+//       },
+//       latestMessage: {
+//         include: {
+//           sender: {
+//             select: {
+//               id: true,
+//               name: true,
+//               email: true,
+//               picture: true,
+//               status: true,
+//             },
+//           },
+//         },
+//       },
+//     },
+//     orderBy: { updatedAt: "desc" },
+//   });
+
+//   if (!conversations.length)
+//     throw createHttpError.BadRequest("Oops...Something went wrong !");
+
+//   return conversations;
+// };
 
 const updateLatestMessage = async (convo_id, msg) => {
   const updatedConvo = await prisma.conversation.update({
@@ -183,4 +249,5 @@ module.exports = {
   doesConversationExist,
   createConversation,
   populateConversation,
+  getUserConversations,
 };
