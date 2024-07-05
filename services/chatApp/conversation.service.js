@@ -111,7 +111,9 @@ const populateConversation = async (id, include) => {
     where: { id },
     include,
   });
-  if (!populatedConvo) throw createHttpError.BadRequest("Oops...Something went wrong !");
+  if (!populatedConvo) {
+    throw customError("Oops...Something went wrong populateConversation", 400);
+  }
   return populatedConvo;
 };
 
@@ -125,18 +127,43 @@ const getUserConversations = async (user_id) => {
       },
     },
     include: {
-      users: { select: { id: true, name: true, picture: true, email: true, status: true } },
-      admin: { select: { id: true, name: true, picture: true, email: true, status: true } },
+      users: {
+        select: {
+          id: true,
+          name: true,
+          picture: true,
+          email: true,
+          status: true,
+        },
+      },
+      admin: {
+        select: {
+          id: true,
+          name: true,
+          picture: true,
+          email: true,
+          status: true,
+        },
+      },
       latestMessage: {
         include: {
-          sender: { select: { id: true, name: true, email: true, picture: true, status: true } },
+          sender: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              picture: true,
+              status: true,
+            },
+          },
         },
       },
     },
-    orderBy: { updatedAt: 'desc' },
+    orderBy: { updatedAt: "desc" },
   });
 
-  if (!conversations.length) throw createHttpError.BadRequest("Oops...Something went wrong !");
+  if (!conversations.length)
+    throw createHttpError.BadRequest("Oops...Something went wrong !");
 
   return conversations;
 };
@@ -146,7 +173,8 @@ const updateLatestMessage = async (convo_id, msg) => {
     where: { id: convo_id },
     data: { latestMessage: { connect: { id: msg.id } } },
   });
-  if (!updatedConvo) throw createHttpError.BadRequest("Oops...Something went wrong !");
+  if (!updatedConvo)
+    throw createHttpError.BadRequest("Oops...Something went wrong !");
 
   return updatedConvo;
 };
@@ -154,4 +182,5 @@ const updateLatestMessage = async (convo_id, msg) => {
 module.exports = {
   doesConversationExist,
   createConversation,
+  populateConversation,
 };

@@ -4,12 +4,13 @@ const prisma = require("../../models");
 const {
   doesConversationExist,
   createConversation,
+  populateConversation,
 } = require("../../services/chatApp/conversation.service");
 const { findUser } = require("../../services/chatApp/user.service");
 
 const create_open_conversation = async (req, res, next) => {
   try {
-    const sender_id = 3; //ปิดรอ auth
+    const sender_id = 10; //ปิดรอ auth
     const { receiver_id } = req.body;
 
     //check if receiver_id is provided
@@ -28,7 +29,7 @@ const create_open_conversation = async (req, res, next) => {
     // if chat exists do ....
     if (existed_conversation) {
       res.json(existed_conversation);
-    // not chat exists do ....
+      // not chat exists do ....
     } else {
       // check receiver_id sender_id have data
       let receiver_user = await findUser(parseInt(receiver_id));
@@ -48,7 +49,11 @@ const create_open_conversation = async (req, res, next) => {
       };
       // createConversation
       const newConvo = await createConversation(convoData);
-      res.status(200).json(newConvo);
+      const populatedConvo = await populateConversation(newConvo.id, {
+        users: true,
+        latestMessage: { include: { sender: true } },
+      });
+      res.status(200).json(populatedConvo);
     }
   } catch (error) {
     next(error);
