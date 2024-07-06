@@ -5,6 +5,7 @@ const {
   doesConversationExist,
   createConversation,
   populateConversation,
+  getUserConversations,
 } = require("../../services/chatApp/conversation.service");
 const { findUser } = require("../../services/chatApp/user.service");
 
@@ -61,4 +62,14 @@ const create_open_conversation = async (req, res, next) => {
   }
 };
 
-module.exports = { create_open_conversation };
+const getConversations = async (req, res, next) => {
+  try {
+    const user_id = 3; //ปิดรอ auth
+    const conversations = await getUserConversations(user_id);
+    res.status(200).json(conversations);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { create_open_conversation, getConversations };
