@@ -1,7 +1,11 @@
 const express = require("express");
-const { sendMessage } = require("../../controllers/chatControllers/messageControllers");
+const {
+  sendMessage,
+  getMessages,
+} = require("../../controllers/chatControllers/messageControllers");
 const Route = express.Router();
 
 Route.post("/", sendMessage);
+Route.get("/:convo_id", getMessages);
 
 module.exports = Route;

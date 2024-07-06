@@ -51,7 +51,34 @@ const populateMessage = async (id) => {
   }
 };
 
+const getConvoMessages = async (convo_id) => {
+  try {
+    const messages = await prisma.message.findMany({
+      where: { conversationId: parseInt(convo_id) },
+      include: {
+        sender: {
+          select: {
+            name: true,
+            picture: true,
+            email: true,
+            status: true,
+          },
+        },
+        conversation: true,
+      },
+    });
+    if (!messages || messages.length === 0) {
+      throw customError("User not found in getConvoMessages.", 400);
+    }
+    return messages;
+  } catch (error) {
+    console.error("Error getting conversation messages: ", error);
+    throw customError("Failed to get messages!", 400);
+  }
+};
+
 module.exports = {
   createMessage,
   populateMessage,
+  getConvoMessages,
 };

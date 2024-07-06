@@ -4,6 +4,7 @@ const prisma = require("../../models");
 const {
   createMessage,
   populateMessage,
+  getConvoMessages,
 } = require("../../services/chatApp/message.service");
 const {
   updateLatestMessage,
@@ -34,6 +35,20 @@ const sendMessage = async (req, res, next) => {
   }
 };
 
+const getMessages = async (req, res, next) => {
+  try {
+    const convo_id = req.params.convo_id;
+    if (!convo_id) {
+      throw customError("Please add a conversation id in params.", 400);
+    }
+    const messages = await getConvoMessages(convo_id);
+    res.json(messages);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   sendMessage,
+  getMessages,
 };
