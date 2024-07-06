@@ -183,66 +183,26 @@ const getUserConversations = async (user_id) => {
   }
 };
 
-// const getUserConversations = async (user_id) => {
-//   const conversations = await prisma.conversation.findMany({
-//     where: {
-//       users: {
-//         some: {
-//           id: user_id,
-//         },
-//       },
-//     },
-//     include: {
-//       users: {
-//         select: {
-//           id: true,
-//           name: true,
-//           picture: true,
-//           email: true,
-//           status: true,
-//         },
-//       },
-//       admin: {
-//         select: {
-//           id: true,
-//           name: true,
-//           picture: true,
-//           email: true,
-//           status: true,
-//         },
-//       },
-//       latestMessage: {
-//         include: {
-//           sender: {
-//             select: {
-//               id: true,
-//               name: true,
-//               email: true,
-//               picture: true,
-//               status: true,
-//             },
-//           },
-//         },
-//       },
-//     },
-//     orderBy: { updatedAt: "desc" },
-//   });
+const updateLatestMessage = async (convo_id, msg_id) => {
+  console.log("convo_id = ", convo_id);
+  console.log("msg_id = ", msg_id);
+  try {
+    const updatedConvo = await prisma.conversation.update({
+      where: { id: parseInt(convo_id) },
+      data: { latestMessageId: parseInt(msg_id) },
+    });
+    if (!updatedConvo) {
+      throw customError(
+        "Oops...Something went wrong in updateLatestMessage! ",
+        400
+      );
+    }
 
-//   if (!conversations.length)
-//     throw createHttpError.BadRequest("Oops...Something went wrong !");
-
-//   return conversations;
-// };
-
-const updateLatestMessage = async (convo_id, msg) => {
-  const updatedConvo = await prisma.conversation.update({
-    where: { id: convo_id },
-    data: { latestMessage: { connect: { id: msg.id } } },
-  });
-  if (!updatedConvo)
-    throw createHttpError.BadRequest("Oops...Something went wrong !");
-
-  return updatedConvo;
+    return updatedConvo;
+  } catch (error) {
+    console.error("Error updating latest message: ", error);
+    throw customError("Failed to update latest message!", 400);
+  }
 };
 
 module.exports = {
@@ -250,4 +210,5 @@ module.exports = {
   createConversation,
   populateConversation,
   getUserConversations,
+  updateLatestMessage,
 };
