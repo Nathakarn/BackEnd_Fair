@@ -8,8 +8,8 @@ const addressRoute = express.Router()
 
 addressRoute.get('/', getallAddress )
 addressRoute.post('/', createAddress)
-addressRoute.put('/', updateAddress)
-addressRoute.delete('/', deleteAddress)
+addressRoute.put('/:address_id', updateAddress)
+addressRoute.delete('/:address_id', deleteAddress)
 
 
 module.exports = addressRoute
