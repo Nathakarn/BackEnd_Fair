@@ -111,47 +111,104 @@ const populateConversation = async (id, include) => {
     where: { id },
     include,
   });
-  if (!populatedConvo) throw createHttpError.BadRequest("Oops...Something went wrong !");
+  if (!populatedConvo) {
+    throw customError("Oops...Something went wrong populateConversation", 400);
+  }
   return populatedConvo;
 };
 
 const getUserConversations = async (user_id) => {
-  const conversations = await prisma.conversation.findMany({
-    where: {
-      users: {
-        some: {
-          id: user_id,
+  try {
+    const conversations = await prisma.conversation.findMany({
+      where: {
+        users: {
+          some: {
+            userId: parseInt(user_id),
+          },
         },
       },
-    },
-    include: {
-      users: { select: { id: true, name: true, picture: true, email: true, status: true } },
-      admin: { select: { id: true, name: true, picture: true, email: true, status: true } },
-      latestMessage: {
-        include: {
-          sender: { select: { id: true, name: true, email: true, picture: true, status: true } },
+      include: {
+        users: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                picture: true,
+                email: true,
+                status: true,
+              },
+            },
+          },
+        },
+        admin: {
+          select: {
+            id: true,
+            name: true,
+            picture: true,
+            email: true,
+            status: true,
+          },
+        }, //remove
+        latestMessage: {
+          include: {
+            sender: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                picture: true,
+                status: true,
+              }, //edit more
+            },
+          },
         },
       },
-    },
-    orderBy: { updatedAt: 'desc' },
-  });
+      orderBy: {
+        updatedAt: "desc",
+      },
+    });
 
-  if (!conversations.length) throw createHttpError.BadRequest("Oops...Something went wrong !");
+    if (!conversations) {
+      throw customError(
+        "Oops...Something went wrong process getUserConversations",
+        400
+      );
+    }
 
-  return conversations;
+    return conversations;
+  } catch (error) {
+    console.error("Error getting user conversations: ", error);
+    throw customError("Oops...Something went wrong getUserConversations", 400);
+  }
 };
 
-const updateLatestMessage = async (convo_id, msg) => {
-  const updatedConvo = await prisma.conversation.update({
-    where: { id: convo_id },
-    data: { latestMessage: { connect: { id: msg.id } } },
-  });
-  if (!updatedConvo) throw createHttpError.BadRequest("Oops...Something went wrong !");
+const updateLatestMessage = async (convo_id, msg_id) => {
+  console.log("convo_id = ", convo_id);
+  console.log("msg_id = ", msg_id);
+  try {
+    const updatedConvo = await prisma.conversation.update({
+      where: { id: parseInt(convo_id) },
+      data: { latestMessageId: parseInt(msg_id) },
+    });
+    if (!updatedConvo) {
+      throw customError(
+        "Oops...Something went wrong in updateLatestMessage! ",
+        400
+      );
+    }
 
-  return updatedConvo;
+    return updatedConvo;
+  } catch (error) {
+    console.error("Error updating latest message: ", error);
+    throw customError("Failed to update latest message!", 400);
+  }
 };
 
 module.exports = {
   doesConversationExist,
   createConversation,
+  populateConversation,
+  getUserConversations,
+  updateLatestMessage,
 };
