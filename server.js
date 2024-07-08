@@ -3,8 +3,10 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const productRoute = require("./routes/product-route/product-route");
+const addressRoute = require("./routes/address-route/address-route");
 const notFound = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error-middleware");
+
 
 
 //middlewares
@@ -15,6 +17,8 @@ app.use(express.json());
 
 //service
 app.use("/product", productRoute);
+app.use("/address", addressRoute);
+// app.use("/user", userRoute);
 
 // not found
 app.use(notFound);
@@ -26,3 +30,4 @@ const port = process.env.PORT || 8080;
 app.listen(port, () => console.log("Server on", port));
 
 console.log(port);
+console.log('kc');
