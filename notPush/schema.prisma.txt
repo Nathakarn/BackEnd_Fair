@@ -48,6 +48,20 @@ model Order {
 }
 //qq
 
+//-------nut
+model Store {
+  store_id          Int         @id @default(autoincrement())
+  opening_date      DateTime    @db.Date
+  store_name        String      @unique @db.VarChar(30)
+  store_description String      @db.Text
+  store_profilepic  String?     @map("profile_img_url")
+  store_cover       String?     @map("cover_img_url")
+  user_id           Int
+  user              User        @relation(fields: [user_id], references: [user_id])
+  products          Product[]
+  subscriptions     Subscript[]
+}
+
 model Product {
   product_id       Int         @id @default(autoincrement())
   product_title    String      @unique @db.VarChar(30)
@@ -57,8 +71,9 @@ model Product {
   category         String
   product_pic      String      @map("product_pic_url")
   product_video    String      @map("product_video_url")
-  product_type     ProductType 
-  stores           Store[]
+  product_type     ProductType
+  store_id         Int
+  store            Store       @relation(fields: [store_id], references: [store_id])
   orders           Order[]
 }
 
@@ -67,7 +82,7 @@ enum ProductType {
   PreOrder
 }
 
-
+//-------nut-end
 
 //-----------------------------------Mix-----------------------------------
 model Message {

@@ -15,8 +15,10 @@ app.use(cors());
 app.use(express.json());
 // app.use(cookieParser());
 
+
 //service
 app.use("/product", productRoute);
+app.use('/store' , storeRouter)
 app.use("/address", addressRoute);
 //service chatapp
 app.use("/conversation", conversationRoute);
