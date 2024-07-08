@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@prisma/client':
-        specifier: 5.16.1
+        specifier: ^5.16.1
         version: 5.16.1(prisma@5.16.1)
       bcryptjs:
         specifier: ^2.4.3
