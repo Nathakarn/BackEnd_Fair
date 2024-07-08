@@ -13,6 +13,26 @@ const findUser = async (userId) => {
   return user;
 };
 
+const searchUsers = async (keyword, userId) => {
+  try {
+    const keywordLowercase = keyword.toLowerCase();
+    const users = await prisma.$queryRaw`
+      SELECT id, name, email, picture, status
+      FROM User
+      WHERE (
+        LOWER(name) LIKE ${"%" + keywordLowercase + "%"}
+        OR LOWER(email) LIKE ${"%" + keywordLowercase + "%"}
+      )
+      AND id != ${userId}
+    `;
+    return users;
+  } catch (error) {
+    console.error("Error searching users: ", error);
+    throw customError("Failed to search users!", 400);
+  }
+};
+
 module.exports = {
   findUser,
+  searchUsers,
 };

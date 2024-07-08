@@ -1,11 +1,14 @@
 const express = require("express");
 const {
-  create_open_conversation,
-  getConversations,
-} = require("../../controllers/chatControllers/conversationControllers");
+  testUsers,
+  searchUsers,
+} = require("../../controllers/chatControllers/userControllers");
 const Route = express.Router();
+// const {
+//   searchUsers,
+//   testUsers,
+// } = require("../../controllers/chatControllers/userControllers");
 
-Route.post("/", create_open_conversation);
-Route.get("/", getConversations);
+Route.get("/", searchUsers);
 
 module.exports = Route;

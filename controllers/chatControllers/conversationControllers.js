@@ -11,7 +11,7 @@ const { findUser } = require("../../services/chatApp/user.service");
 
 const create_open_conversation = async (req, res, next) => {
   try {
-    const sender_id = 10; //ปิดรอ auth
+    const sender_id = 3; //ปิดรอ auth
     const { receiver_id } = req.body;
 
     //check if receiver_id is provided
