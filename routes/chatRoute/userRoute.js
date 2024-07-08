@@ -11,4 +11,4 @@ const Route = express.Router();
 
 Route.get("/", searchUsers);
 
-module.exports = Route;
+// module.exports = Route;
