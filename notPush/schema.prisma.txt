@@ -22,6 +22,7 @@ model User {
   phone_number  String      @db.VarChar(10)
   profile_pic   String?     @map("img_url")
   orders       Order[]      //เพิ่ม By.Q
+  store        Store[]      //add By.NUT
 }
 
 
