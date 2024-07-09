@@ -123,3 +123,15 @@ model UserConversation {
   @@unique([userId, conversationId])
 }
 //-----------------------------------Mix----------------------------------
+
+
+//--------- win -----------// 
+model Review {
+  review_id Int    @id @default(autoincrement())
+  content   String @db.Text
+  rating    Int
+  order_id  Int
+  // order             Order       @relation(fields: [order_id], references: [order_id])
+}
+
+// ---------- win -------------//
