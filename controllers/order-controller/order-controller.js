@@ -5,7 +5,7 @@ const prisma = require("../../models");
 
 module.exports.getallorder = tryCatch(async (req, res) => {
     const order = await prisma.order.findMany({
-      where:{id : 1},
+      where:{order_id : 1},
         include:{product : true}
     });
     console.log(order)
