@@ -84,7 +84,25 @@ enum ProductType {
 
 //-------nut-end
 
+
 //-----------------------------------Mix-----------------------------------
+model Conversation {
+  id              Int      @id @default(autoincrement())
+  name            String
+  picture         String
+  isGroup         Boolean  @default(false)
+  latestMessage   Message? @relation("LatestMessageRelation", fields: [latestMessageId], references: [id])
+  latestMessageId Int? @unique
+  admin           User?    @relation("AdminRelation", fields: [adminId], references: [id])
+  adminId         Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  users    UserConversation[]
+  messages Message[] @relation("ConversationMessages")
+}
+
 model Message {
   id             Int            @id @default(autoincrement())
   sender         User?          @relation(fields: [senderId], references: [id])
