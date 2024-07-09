@@ -80,5 +80,5 @@ const getConvoMessages = async (convo_id) => {
 module.exports = {
   createMessage,
   populateMessage,
-  getConvoMessages,
+  getConvoMessages
 };

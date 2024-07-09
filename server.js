@@ -6,6 +6,7 @@ const productRoute = require("./routes/product-route/product-route");
 const addressRoute = require("./routes/address-route/address-route");
 const conversationRoute = require("./routes/chatRoute/conversationRoute");
 const messageRoute = require("./routes/chatRoute/messageRoute");
+const userRoute = require("./routes/chatRoute/userRoute");
 const notFound = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error-middleware");
 const reviewRoute = require("./routes/review-routes/review-route");
@@ -23,6 +24,7 @@ app.use("/address", addressRoute);
 //service chatapp
 app.use("/conversation", conversationRoute);
 app.use("/message", messageRoute);
+app.use("/user", userRoute);
 // app.use("/user", userRoute);
 
 
