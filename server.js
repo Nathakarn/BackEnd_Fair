@@ -12,6 +12,7 @@ const userRoute = require("./routes/chatRoute/userRoute");
 const notFound = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error-middleware");
 const reviewRoute = require("./routes/review-routes/review-route");
+const authRoute = require("./routes/auth-route/auth-route");
 
 //middlewares
 app.use(cors());
@@ -20,6 +21,10 @@ app.use(express.json());
 
 
 //service
+
+//auth
+app.use("/auth", authRoute)
+
 // app.use("/product", productRoute);
 app.use("/address", addressRoute);
 app.use("/order",orderRouter )
