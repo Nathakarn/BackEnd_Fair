@@ -3,7 +3,9 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const productRoute = require("./routes/product-route/product-route");
+const orderRouter = require("./routes/order-route/order-route");
 const addressRoute = require("./routes/address-route/address-route");
+const storeRouter = require("./routes/store-route/store-route");
 const conversationRoute = require("./routes/chatRoute/conversationRoute");
 const messageRoute = require("./routes/chatRoute/messageRoute");
 const userRoute = require("./routes/chatRoute/userRoute");
@@ -18,9 +20,14 @@ app.use(express.json());
 
 
 //service
+// app.use("/product", productRoute);
+app.use("/address", addressRoute);
+app.use("/order",orderRouter )
+
 app.use("/product", productRoute);
 app.use('/store' , storeRouter)
 app.use("/address", addressRoute);
+
 //service chatapp
 app.use("/conversation", conversationRoute);
 app.use("/message", messageRoute);
@@ -42,4 +49,4 @@ const port = process.env.PORT || 8080;
 app.listen(port, () => console.log("Server on", port));
 
 console.log(port);
-console.log("kc");
+

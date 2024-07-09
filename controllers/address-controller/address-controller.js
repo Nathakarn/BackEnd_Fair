@@ -4,75 +4,104 @@ const tryCatch = require("../../utils/tryCatch");
 const prisma = require("../../models");
 
 module.exports.getallAddress = tryCatch(async (req, res) => {
-
-
-  const rs = await prisma.address.findMany({
+  const addresses = await prisma.address.findMany({
     select: {
       address_id: true,
       name: true,
       address: true,
       province: true,
       district: true,
+      code: true,
       phone: true,
       email: true
     }
   });
 
-  if (rs.length === 0) {
-    throw customError("Address not found.", 401);
+  if (addresses.length === 0) {
+    throw customError("Address not found.", 404); 
   }
 
-  res.status(201).json(rs);
+  res.status(200).json(addresses); 
 });
 
 module.exports.createAddress = tryCatch(async (req, res) => {
-  const { name, address, province, district, phone, email } = req.body;
+  const { name, address, province, district, code, phone, email } = req.body;
 
-  if (!(name && address && province && district && phone && email)) {
+  if (!(name && address && province && district && code && phone && email)) {
     throw customError("Please complete all input fields.", 402);
   }
 
-  const rs = await prisma.address.create({
-    data: {
-      name, address, province, district, phone, email
-    }
-  })
+  try {
+    const newAddress = await prisma.address.create({
+      data: {
+        name, 
+        address, 
+        province, 
+        district, 
+        code, 
+        phone, 
+        email
+      }
+    });
 
-  res.status(202).json({ message: "Create Successfully" });
+    res.status(202).json({ message: "Create Successfully", address: newAddress });
+  } catch (error) {
+    console.error(error);
+    throw customError("Error creating address", 500);
+  }
 });
 
 module.exports.updateAddress = tryCatch(async (req, res) => {
-  const { id } = req.params
-  const { name, address, province, district, phone, email } = req.body
+  const { address_id } = req.params;
+  const { name, address, province, district, code, phone, email } = req.body;
 
-  if (!id || !(name || address || province || district || phone || email)) {
-    throw customError("Please provide a valid ID and at least one field to update.", 403);
+  if (!address_id) {
+    throw customError("Please provide a valid ID.", 400);
   }
 
-  const rs = await prisma.address.update({
-    where: { address_id: Number(id) },
-    data: {
-      name,
-      address,
-      province,
-      district,
-      phone,
-      email,
-    }
-  })
-  res.status(203).json({ message: "Update Successfully" });
+  const data = {};
+  if (name) data.name = name;
+  if (address) data.address = address;
+  if (province) data.province = province;
+  if (district) data.district = district;
+  if (code) data.code = code;
+  if (phone) data.phone = phone;
+  if (email) data.email = email;
 
-})
-
-module.exports.deleteAddress = tryCatch(async (req,res) =>{
-  const {id} = req.params
-
-  if (!id) {
-    return next(customError("ID is required.", 404));
+  if (Object.keys(data).length === 0) {
+    throw customError("Please provide at least one field to update.", 400);
   }
 
-  const rs = await prisma.address.delete({
-    where: { address_id: Number(id) }
-  })
-  res.status(204).json({ message: "Delete Successfully" });
-})
+  try {
+    const rs = await prisma.address.update({
+      where: { address_id: Number(address_id) },
+      data
+    });
+
+    res.status(202).json({ message: "Update Successfully", data: rs });
+  } catch (error) {
+    throw customError("Failed to update address.", 500);
+  }
+});
+
+module.exports.deleteAddress = tryCatch(async (req, res, next) => {
+  const { address_id } = req.params;
+
+  if (!address_id) {
+    console.error("ID is required.");
+    return next(customError("ID is required.", 400));
+  }
+
+  try {
+    await prisma.address.delete({
+      where: { address_id: Number(address_id) }
+    });
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting address:", error);
+    res.status(500).send({ error: "Error deleting address" });
+  }
+});
+
+
+
