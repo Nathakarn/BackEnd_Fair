@@ -5,7 +5,7 @@ const prisma = require("../../models");
 
 module.exports.createProduct = tryCatch(async (req, res, next) => {
   const { product_title,description,price,
-    wholesaler_price,category,product_pic,product_video,product_type
+    wholesaler_price,category,product_pic,product_video,product_type,store_id
   } = req.body;
 
   // validation
@@ -18,7 +18,8 @@ const rs = await prisma.product.create({
     category,
     product_pic,
     product_video,
-    product_type
+    product_type,
+    store_id
   }
 })
 
@@ -48,7 +49,8 @@ module.exports.updateProduct = tryCatch( async (req,res) => {
       category,
       product_pic,
       product_video,
-      product_type
+      product_type,
+      store_id
     }
   })
   res.json({result: rs})
