@@ -21,7 +21,7 @@ model User {
   email         String      @db.VarChar(99)
   phone_number  String      @db.VarChar(10)
   profile_pic   String?     @map("img_url")
-  order       Order[]      //เพิ่ม By.Qแก้ไขลบs
+  order       Order[]      //เพิ่ม By.Q
   store        Store[]      //add By.NUT
 }
 
@@ -97,7 +97,25 @@ enum ProductType {
 
 //-------nut-end
 
+
 //-----------------------------------Mix-----------------------------------
+model Conversation {
+  id              Int      @id @default(autoincrement())
+  name            String
+  picture         String
+  isGroup         Boolean  @default(false)
+  latestMessage   Message? @relation("LatestMessageRelation", fields: [latestMessageId], references: [id])
+  latestMessageId Int? @unique
+  admin           User?    @relation("AdminRelation", fields: [adminId], references: [id])
+  adminId         Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  users    UserConversation[]
+  messages Message[] @relation("ConversationMessages")
+}
+
 model Message {
   id             Int            @id @default(autoincrement())
   sender         User?          @relation(fields: [senderId], references: [id])
@@ -123,3 +141,15 @@ model UserConversation {
   @@unique([userId, conversationId])
 }
 //-----------------------------------Mix----------------------------------
+
+
+//--------- win -----------// 
+model Review {
+  review_id Int    @id @default(autoincrement())
+  content   String @db.Text
+  rating    Int
+  order_id  Int
+  // order             Order       @relation(fields: [order_id], references: [order_id])
+}
+
+// ---------- win -------------//

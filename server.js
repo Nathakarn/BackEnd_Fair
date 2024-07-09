@@ -8,9 +8,11 @@ const addressRoute = require("./routes/address-route/address-route");
 const storeRouter = require("./routes/store-route/store-route");
 const conversationRoute = require("./routes/chatRoute/conversationRoute");
 const messageRoute = require("./routes/chatRoute/messageRoute");
+const userRoute = require("./routes/chatRoute/userRoute");
 const notFound = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error-middleware");
 const reviewRoute = require("./routes/review-routes/review-route");
+const authRoute = require("./routes/auth-route/auth-route");
 
 //middlewares
 app.use(cors());
@@ -19,6 +21,10 @@ app.use(express.json());
 
 
 //service
+
+//auth
+app.use("/auth", authRoute)
+
 // app.use("/product", productRoute);
 app.use("/address", addressRoute);
 app.use("/order",orderRouter )
@@ -30,6 +36,7 @@ app.use('/store' , storeRouter)
 //service chatapp
 app.use("/conversation", conversationRoute);
 app.use("/message", messageRoute);
+app.use("/user", userRoute);
 // app.use("/user", userRoute);
 
 
