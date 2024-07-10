@@ -22,6 +22,8 @@ model User {
   phone_number  String      @db.VarChar(10)
   profile_pic   String?     @map("img_url")
   orders       Order[]      //เพิ่ม By.Q
+  store        Store[]      //add By.NUT
+  review          Review[] // add by win
 }
 
 
@@ -48,6 +50,7 @@ model Order {
   user            User?    @relation(fields: [user_id], references: [user_id])
   user_id         Int?
   product         Product[] 
+  review          Review[] // add by win
 }
 
 enum Status {
@@ -87,6 +90,7 @@ model Product {
 
   order            Order? @relation(fields: [order_id], references: [order_id])  //เพิ่ม By.Q
   order_id         Int?       //เพิ่ม By.Q
+  review          Review[] // add by win
 }
 
 enum ProductType {
@@ -129,8 +133,15 @@ model Review {
   review_id Int    @id @default(autoincrement())
   content   String @db.Text
   rating    Int
+  
   order_id  Int
-  // order             Order       @relation(fields: [order_id], references: [order_id])
+  order     Order?       @relation(fields: [order_id], references: [order_id])
+
+  product_id Int
+  product   Product?     @relation(fields: [product_id], references : [product_id])
+
+  user_id Int
+  user     User?         @relation(fields: [user_id], references: [user_id])
 }
 
 // ---------- win -------------//
