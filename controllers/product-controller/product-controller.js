@@ -26,12 +26,23 @@ const rs = await prisma.product.create({
   res.json({ msg: "create Product done", result :rs });
 });
 
-module.exports.getProduct =tryCatch(async (req,res) =>{
-  const rs = await prisma.product.findMany({
-    // where :{ product_id: req.product.id}
-  })
-  res.json({products :rs})
-})
+//getAllProducts
+module.exports.getAllProducts = tryCatch(async (req, res) => {
+  const rs = await prisma.product.findMany();
+  res.json({ products: rs });
+});
+
+module.exports.getProductById =tryCatch(async (req,res) =>{
+  const { id } = req.params;
+  const rs = await prisma.product.findUnique({
+    where: { product_id: Number(id) }
+  });
+  if (!rs) {
+    return res.status(404).json({ msg: "Product not found" });
+  }
+  res.json({ product: rs });
+});
+
 
 module.exports.updateProduct = tryCatch( async (req,res) => {
   const {id} =req.params
@@ -64,3 +75,24 @@ module.exports.deleteProduct = tryCatch(async(req,res,next) =>{
   })
   res.json({result: rs})
 })
+
+// getProductsByPriceDesc
+module.exports.getProductsByPriceDesc = tryCatch(async (req, res) => {
+  const rs = await prisma.product.findMany({
+    orderBy: {
+      price: 'desc'
+    }
+  });
+  res.json({ products: rs });
+});
+
+// getProductsByCategory
+module.exports.getProductsByCategory = tryCatch(async (req, res) => {
+  const { category } = req.params;
+  const rs = await prisma.product.findMany({
+    where: {
+      category: category
+    }
+  });
+  res.json({ products: rs });
+});
