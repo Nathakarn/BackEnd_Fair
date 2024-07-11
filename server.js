@@ -34,9 +34,9 @@ app.use('/store' , storeRouter)
 
 
 //service chatapp
-app.use("/conversation", conversationRoute);
-app.use("/message", messageRoute);
-app.use("/user", userRoute);
+// app.use("/conversation", conversationRoute);
+// app.use("/message", messageRoute);
+// app.use("/user", userRoute);
 // app.use("/user", userRoute);
 
 
