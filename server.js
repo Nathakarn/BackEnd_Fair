@@ -31,7 +31,7 @@ app.use("/order",orderRouter )
 
 app.use("/product", productRoute);
 app.use('/store' , storeRouter)
-app.use("/address", addressRoute);
+
 
 //service chatapp
 app.use("/conversation", conversationRoute);

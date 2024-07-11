@@ -21,7 +21,7 @@ model User {
   email         String      @db.VarChar(99)
   phone_number  String      @db.VarChar(10)
   profile_pic   String?     @map("img_url")
-  orders       Order[]      //เพิ่ม By.Q
+  order       Order[]      //เพิ่ม By.Q
   store        Store[]      //add By.NUT
   review          Review[] // add by win
 }
@@ -37,7 +37,7 @@ model Address {
   code       String? @db.VarChar(5)
   phone      String? @db.VarChar(10)
   email      String? @db.VarChar(99)
-  orders     Order[] 
+  order     Order[]   //แก้ไขลบs
 }
 
 model Order {
@@ -72,7 +72,6 @@ model Store {
   user_id           Int
   user              User        @relation(fields: [user_id], references: [user_id])
   products          Product[]
-  subscriptions     Subscript[]
 }
 
 model Product {
@@ -88,7 +87,7 @@ model Product {
   store_id         Int
   store            Store       @relation(fields: [store_id], references: [store_id])
 
-  order            Order? @relation(fields: [order_id], references: [order_id])  //เพิ่ม By.Q
+  order            Order? @relation(fields: [order_id], references: [order_id])  //เพิ่ม By.Qแก้ไขลบs
   order_id         Int?       //เพิ่ม By.Q
   review          Review[] // add by win
 }
@@ -100,7 +99,25 @@ enum ProductType {
 
 //-------nut-end
 
+
 //-----------------------------------Mix-----------------------------------
+model Conversation {
+  id              Int      @id @default(autoincrement())
+  name            String
+  picture         String
+  isGroup         Boolean  @default(false)
+  latestMessage   Message? @relation("LatestMessageRelation", fields: [latestMessageId], references: [id])
+  latestMessageId Int? @unique
+  admin           User?    @relation("AdminRelation", fields: [adminId], references: [id])
+  adminId         Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  users    UserConversation[]
+  messages Message[] @relation("ConversationMessages")
+}
+
 model Message {
   id             Int            @id @default(autoincrement())
   sender         User?          @relation(fields: [senderId], references: [id])
