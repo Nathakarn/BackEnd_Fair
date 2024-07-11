@@ -3,10 +3,17 @@ const tryCatch = require("../../utils/tryCatch")
 const prisma = require("../../models");
 
 
+
 module.exports.getallorder = tryCatch(async (req, res) => {
+    const rs = await prisma.order.findMany();
+    res.json({ order: rs });
+    
+});
+
+module.exports.getorderById = tryCatch(async (req, res) => {
     const order = await prisma.order.findMany({
-      where:{order_id : 1},
-        include:{product : true}
+        where: { order_id: 1 },
+        include: { product: true }
     });
     console.log(order)
     if (order.length === 0) {
@@ -15,6 +22,18 @@ module.exports.getallorder = tryCatch(async (req, res) => {
 
     res.status(206).json(order);
 });
+
+// module.exports.getorderById = tryCatch(async (req, res) => {
+//     const { id } = req.params;
+//     const rs = await prisma.order.findUnique({
+//         where: { order_id: Number(id) },
+//         include: { product: true }
+//     });
+//     if (!rs) {
+//         return res.status(404).json({ msg: "Order not found" });
+//     }
+//     res.json({ order: rs });
+// });
 
 module.exports.createOrder = tryCatch(async (req, res) => {
     const { payment_method } = req.body;
@@ -26,7 +45,7 @@ module.exports.createOrder = tryCatch(async (req, res) => {
                 payment_method
             }
         });
-    res.json('create ok');
+        res.json('create ok');
     } catch (error) {
         console.error(error);
         res.status(409).json({ message: "Error creating order" });
