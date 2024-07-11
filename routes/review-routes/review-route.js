@@ -3,9 +3,9 @@ const reviewController = require("../../controllers/review-controller/review-con
 const reviewRoute = express.Router()
 
 reviewRoute.post("/",reviewController.createReview)
-reviewRoute.get("/", reviewController.getReview)
-reviewRoute.put("/", reviewController.updateReview)
-reviewRoute.delete("/", reviewController.deleteReview)
+reviewRoute.get("/:id", reviewController.getReview)
+reviewRoute.put("/:id", reviewController.updateReview)
+reviewRoute.delete("/:id", reviewController.deleteReview)
 
 
 module.exports = reviewRoute ;
