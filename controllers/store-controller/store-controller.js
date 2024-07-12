@@ -42,7 +42,7 @@ module.exports.getStoreByUserId =tryCatch(async (req,res) =>{
     const rs = await prisma.store.findMany({
       where :{ user_id: Number(id)}
     })
-    res.json({store :rs})
+    res.json(rs)
   })
 
 
@@ -76,6 +76,6 @@ module.exports.deleteStore = tryCatch(async(req,res,next) =>{
     const rs = await prisma.store.delete({
       where: { store_id: Number(id) }  
     })
-    res.json({result: rs})
+    res.json(rs)
   })
   
