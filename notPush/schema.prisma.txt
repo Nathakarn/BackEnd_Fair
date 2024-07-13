@@ -19,11 +19,18 @@ model User {
   username      String      @unique @db.VarChar(20)
   password      String      @db.VarChar(72)
   email         String      @db.VarChar(99)
+  picture       String      @default("https://res.cloudinary.com/dkd5jblv5/image/upload/v1675976806/Default_ProfilePicture_gjngnb.png")
+  status        String   @default("Hey there ! I am using fair chat")
   phone_number  String      @db.VarChar(10)
-  profile_pic   String?     @map("img_url")
-  order       Order[]      //เพิ่ม By.Q
+  orders       Order[]      //เพิ่ม By.Q
   store        Store[]      //add By.NUT
-  review          Review[] // add by win
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  // Relations
+  conversations UserConversation[]
+  messages      Message[]
+  adminOf       Conversation[] @relation("AdminRelation")
 }
 
 
@@ -103,12 +110,12 @@ enum ProductType {
 //-----------------------------------Mix-----------------------------------
 model Conversation {
   id              Int      @id @default(autoincrement())
-  name            String
+  username        String
   picture         String
   isGroup         Boolean  @default(false)
   latestMessage   Message? @relation("LatestMessageRelation", fields: [latestMessageId], references: [id])
   latestMessageId Int? @unique
-  admin           User?    @relation("AdminRelation", fields: [adminId], references: [id])
+  admin           User?    @relation("AdminRelation", fields: [adminId], references: [user_id])
   adminId         Int?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -120,7 +127,7 @@ model Conversation {
 
 model Message {
   id             Int            @id @default(autoincrement())
-  sender         User?          @relation(fields: [senderId], references: [id])
+  sender         User?          @relation(fields: [senderId], references: [user_id])
   senderId       Int?
   message        String
   conversation   Conversation?  @relation("ConversationMessages", fields: [conversationId], references: [id])
@@ -135,7 +142,7 @@ model Message {
 
 model UserConversation {
   id             Int          @id @default(autoincrement())
-  user           User         @relation(fields: [userId], references: [id])
+  user           User         @relation(fields: [userId], references: [user_id])
   userId         Int
   conversation   Conversation @relation(fields: [conversationId], references: [id])
   conversationId Int
