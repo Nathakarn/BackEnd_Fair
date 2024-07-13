@@ -9,6 +9,7 @@ const storeRouter = require("./routes/store-route/store-route");
 const conversationRoute = require("./routes/chatRoute/conversationRoute");
 const messageRoute = require("./routes/chatRoute/messageRoute");
 const userRoute = require("./routes/chatRoute/userRoute");
+const searchRoute = require("./routes/searchRoute/searchRoute");
 const notFound = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error-middleware");
 const reviewRoute = require("./routes/review-routes/review-route");
