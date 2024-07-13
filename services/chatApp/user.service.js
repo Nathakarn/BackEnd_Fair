@@ -4,7 +4,7 @@ const prisma = require("../../models");
 
 const findUser = async (userId) => {
   const user = await prisma.user.findUnique({
-    where: { id: parseInt(userId) },
+    where: { user_id: parseInt(userId) },
   });
 
   if (!user) {
@@ -17,13 +17,13 @@ const searchUsers = async (keyword, userId) => {
   try {
     const keywordLowercase = keyword.toLowerCase();
     const users = await prisma.$queryRaw`
-      SELECT id, name, email, picture, status
+      SELECT user_id, username, email, picture, status
       FROM User
       WHERE (
-        LOWER(name) LIKE ${"%" + keywordLowercase + "%"}
+        LOWER(username) LIKE ${"%" + keywordLowercase + "%"}
         OR LOWER(email) LIKE ${"%" + keywordLowercase + "%"}
       )
-      AND id != ${userId}
+      AND user_id != ${userId}
     `;
     return users;
   } catch (error) {

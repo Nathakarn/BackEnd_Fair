@@ -12,7 +12,7 @@ const {
 
 const sendMessage = async (req, res, next) => {
   try {
-    const user_id = 3;
+    const user_id = 1;
     const { message, convo_id, files } = req.body;
     if (!convo_id || (!message && !files)) {
       throw customError(

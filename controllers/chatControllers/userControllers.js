@@ -6,7 +6,7 @@ const {
 } = require("../../services/chatApp/user.service");
 
 const searchUsers = async (req, res, next) => {
-  userId = 3;
+  userId = 1;
   try {
     const keyword = req.query.search;
     if (!keyword) {
