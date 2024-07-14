@@ -26,6 +26,8 @@ model User {
   store        Store[]      //add By.NUT
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+  verificationToken String? @unique //add by tao
+  verified          Boolean  @default(false) //add by tao
 
   // Relations
   conversations UserConversation[]
