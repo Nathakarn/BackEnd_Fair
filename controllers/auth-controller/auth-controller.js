@@ -54,6 +54,8 @@ module.exports.verifyEmail = tryCatch(async (req, res, next) => {
   res.status(200).sendFile(path.join(__dirname, '../../verified.html'));
 });
 
+
+
 module.exports.login = tryCatch (async (req, res, next) =>{
 
   const { username, password } = req.body;

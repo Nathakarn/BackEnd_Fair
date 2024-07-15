@@ -5,6 +5,8 @@ const cors = require("cors");
 const productRoute = require("./routes/product-route/product-route");
 const orderRouter = require("./routes/order-route/order-route");
 const addressRoute = require("./routes/address-route/address-route");
+const cartRoute = require("./routes/cart-route/cart-route");
+const cartItemRoute = require("./routes/cartItem-route/cartItem-route")
 const storeRouter = require("./routes/store-route/store-route");
 const conversationRoute = require("./routes/chatRoute/conversationRoute");
 const messageRoute = require("./routes/chatRoute/messageRoute");
@@ -22,12 +24,16 @@ app.use(express.json());
 
 //service
 
+
 //auth
 app.use("/auth", authRoute);
 
-// app.use("/product", productRoute);
+
 app.use("/address", addressRoute);
 app.use("/order", orderRouter);
+app.use("/cart",cartRoute )
+app.use("/cartitem",cartItemRoute )
+
 
 app.use("/product", productRoute);
 app.use("/store", storeRouter);
