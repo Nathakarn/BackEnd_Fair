@@ -5,6 +5,7 @@ const prisma = require("../../models");
 const { v4: uuidv4 } = require("uuid");
 const { sendVerificationEmail } = require("../../utils/email");
 const jwt = require("jsonwebtoken");
+const path = require('path');
 
 module.exports.register = tryCatch(async (req, res, next) => {
   const { username, password, confirmPassword, email, phone_number } = req.body;
@@ -30,7 +31,7 @@ module.exports.register = tryCatch(async (req, res, next) => {
 
   await prisma.user.create({ data: newUser });
 
-  const verificationUrl = `http://localhost:8080/verify-email?token=${verificationToken}`;
+  const verificationUrl = `http://localhost:8080/auth/verify-email?token=${verificationToken}`;
   await sendVerificationEmail(email, verificationUrl);
 
   res.status(201).json({ msg: "Register Successfully. Please check your email to verify your account." });
@@ -50,8 +51,8 @@ module.exports.verifyEmail = tryCatch(async (req, res, next) => {
     data: { verified: true, verificationToken: null }
   });
 
-  res.status(200).json({ msg: "Email verified successfully" });
-})
+  res.status(200).sendFile(path.join(__dirname, '../../verified.html'));
+});
 
 module.exports.login = tryCatch (async (req, res, next) =>{
 
