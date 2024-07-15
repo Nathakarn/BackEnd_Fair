@@ -2,6 +2,9 @@ const jwt = require('jsonwebtoken')
 const prisma = require('../models')
 const customError = require("../utils/customError")
 const tryCatch = require("../utils/tryCatch")
+require('dotenv').config();
+
+
 
 
 module.exports = tryCatch(async (req, res, next) => {
