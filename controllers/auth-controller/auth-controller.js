@@ -25,6 +25,8 @@ module.exports.register = tryCatch (async (req, res, next) =>{
     res.json({msg: "Register Success"})
 })
 
+
+
 module.exports.login = tryCatch (async (req, res, next) =>{
 
   const { username, password } = req.body;
