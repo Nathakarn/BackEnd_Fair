@@ -45,7 +45,7 @@ app.use("/user", userRoute);
 app.use("/search", searchRoute);
 
 //review
-app.use("/review", reviewRoute);
+// app.use("/review", reviewRoute);
 
 // not found
 app.use(notFound);
