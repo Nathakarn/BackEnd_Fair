@@ -3,8 +3,7 @@ const tryCatch = require("../../utils/tryCatch");
 const prisma = require("../../models");
 
 
-const prisma = require('../../models')
-const tryCatch = require('../../utils/tryCatch')
+
 
 
 module.exports.createReview = tryCatch(async(req ,res) =>  {

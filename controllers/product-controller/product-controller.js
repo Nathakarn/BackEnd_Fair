@@ -29,7 +29,7 @@ const rs = await prisma.product.create({
 //getAllProducts
 module.exports.getAllProducts = tryCatch(async (req, res) => {
   const rs = await prisma.product.findMany();
-  res.json({ products: rs });
+  res.json( rs);
 });
 
 module.exports.getProductById =tryCatch(async (req,res) =>{
