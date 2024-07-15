@@ -29,6 +29,8 @@ model User {
   review        Review[]     //add by.win
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+
+  review        Review[] //add by win
   
 
   verificationToken String? @unique //add by tao
