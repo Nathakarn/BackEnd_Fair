@@ -20,12 +20,19 @@ model User {
   password      String      @db.VarChar(72)
   email         String      @db.VarChar(99)
   picture       String      @default("https://res.cloudinary.com/dkd5jblv5/image/upload/v1675976806/Default_ProfilePicture_gjngnb.png")
-  status        String   @default("Hey there ! I am using fair chat")
+  status        String      @default("Hey there ! I am using whatsapp")
   phone_number  String      @db.VarChar(10)
-  orders       Order[]      //เพิ่ม By.Q
-  store        Store[]      //add By.NUT
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  profile_pic   String?     @map("img_url")
+  order         Order[]      //เพิ่ม By.Q
+  cart          Cart[]      //เพิ่ม By.Q
+  store         Store[]      //add By.NUT
+  review        Review[]     //add by.win
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  review        Review[] //add by win
+  
+
   verificationToken String? @unique //add by tao
   verified          Boolean  @default(false) //add by tao
 
@@ -57,6 +64,9 @@ model Order {
   address_id      Int?
   address         Address? @relation(fields: [address_id], references: [address_id])
   user_id         Int?
+  user            User?    @relation(fields: [user_id], references: [user_id])
+  cart_id         Int?      
+  cart            Cart[]
   product         Product[] 
   review          Review[] // add by win
 }
@@ -115,6 +125,9 @@ model Product {
   product_type     ProductType
   store_id         Int
   store            Store       @relation(fields: [store_id], references: [store_id])
+  
+  cartitem_id      Int          //เพิ่ม By.Q
+  cartItems        CartItem[]   //เพิ่ม By.Q
 
   order            Order? @relation(fields: [order_id], references: [order_id])  //เพิ่ม By.Qแก้ไขลบs
   order_id         Int?       //เพิ่ม By.Q
