@@ -5,7 +5,7 @@ const prisma = require("../../models");
 
 module.exports.createProduct = tryCatch(async (req, res, next) => {
   const { product_title,description,price,
-    wholesaler_price,category,product_pic,product_video,product_type,store_id
+    real_price,category,product_pic,product_video,product_type,store_id
   } = req.body;
 
   // validation
@@ -14,7 +14,7 @@ const rs = await prisma.product.create({
     product_title,
     description,
     price,
-    wholesaler_price,
+    real_price,
     category,
     product_pic,
     product_video,
@@ -24,12 +24,12 @@ const rs = await prisma.product.create({
 })
 
   res.json({ msg: "create Product done", result :rs });
-});
+}); 
 
 //getAllProducts
 module.exports.getAllProducts = tryCatch(async (req, res) => {
   const rs = await prisma.product.findMany();
-  res.json({ products: rs });
+  res.json( rs);
 });
 
 module.exports.getProductById =tryCatch(async (req,res) =>{
@@ -40,14 +40,14 @@ module.exports.getProductById =tryCatch(async (req,res) =>{
   if (!rs) {
     return res.status(404).json({ msg: "Product not found" });
   }
-  res.json({ product: rs });
+  res.json(rs);
 });
 
 
 module.exports.updateProduct = tryCatch( async (req,res) => {
   const {id} =req.params
   const { product_title,description,price,
-    wholesaler_price,category,product_pic,product_video,product_type
+    real_price,category,product_pic,product_video,product_type
   } = req.body;
 
   const rs = await prisma.product.update({
@@ -56,7 +56,7 @@ module.exports.updateProduct = tryCatch( async (req,res) => {
       product_title,
       description,
       price,
-      wholesaler_price,
+      real_price,
       category,
       product_pic,
       product_video,
@@ -64,7 +64,7 @@ module.exports.updateProduct = tryCatch( async (req,res) => {
       store_id
     }
   })
-  res.json({result: rs})
+  res.json(rs)
 })
 
 module.exports.deleteProduct = tryCatch(async(req,res,next) =>{
@@ -73,7 +73,7 @@ module.exports.deleteProduct = tryCatch(async(req,res,next) =>{
   const rs = await prisma.product.delete({
     where: { product_id: Number(id) }  
   })
-  res.json({result: rs})
+  res.json(rs)
 })
 
 // getProductsByPriceDesc
@@ -83,7 +83,7 @@ module.exports.getProductsByPriceDesc = tryCatch(async (req, res) => {
       price: 'desc'
     }
   });
-  res.json({ products: rs });
+  res.json( rs );
 });
 
 // getProductsByCategory
@@ -94,5 +94,5 @@ module.exports.getProductsByCategory = tryCatch(async (req, res) => {
       category: category
     }
   });
-  res.json({ products: rs });
+  res.json( rs);
 });

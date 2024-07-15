@@ -32,8 +32,8 @@ const doesConversationExist = async (sender_id, receiver_id) => {
         include: {
           user: {
             select: {
-              id: true,
-              name: true,
+              user_id: true,
+              username: true,
               picture: true,
             },
           },
@@ -43,8 +43,8 @@ const doesConversationExist = async (sender_id, receiver_id) => {
         include: {
           sender: {
             select: {
-              id: true,
-              name: true,
+              user_id: true,
+              username: true,
               email: true,
               picture: true,
               status: true,
@@ -65,7 +65,7 @@ const doesConversationExist = async (sender_id, receiver_id) => {
 };
 
 const createConversation = async (data) => {
-  const { senderId, receiverId, name, picture, isGroup } = data;
+  const { senderId, receiverId, username, picture, isGroup } = data;
 
   // check senderId and receiverId data
   if (!senderId || !receiverId) {
@@ -76,13 +76,13 @@ const createConversation = async (data) => {
     const newConvo = await prisma.$transaction(async (prisma) => {
       const conversation = await prisma.conversation.create({
         data: {
-          name,
+          username,
           picture,
           isGroup,
           users: {
             create: [
-              { user: { connect: { id: senderId } } },
-              { user: { connect: { id: receiverId } } },
+              { user: { connect: { user_id: senderId } } },
+              { user: { connect: { user_id: receiverId } } },
             ],
           },
         },
@@ -132,8 +132,8 @@ const getUserConversations = async (user_id) => {
           include: {
             user: {
               select: {
-                id: true,
-                name: true,
+                user_id: true,
+                username: true,
                 picture: true,
                 email: true,
                 status: true,
@@ -143,8 +143,8 @@ const getUserConversations = async (user_id) => {
         },
         admin: {
           select: {
-            id: true,
-            name: true,
+            user_id: true,
+            username: true,
             picture: true,
             email: true,
             status: true,
@@ -154,8 +154,8 @@ const getUserConversations = async (user_id) => {
           include: {
             sender: {
               select: {
-                id: true,
-                name: true,
+                user_id: true,
+                username: true,
                 email: true,
                 picture: true,
                 status: true,

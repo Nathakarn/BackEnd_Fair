@@ -21,7 +21,7 @@ const populateMessage = async (id) => {
       include: {
         sender: {
           select: {
-            name: true,
+            username: true,
             picture: true,
           },
         },
@@ -31,7 +31,7 @@ const populateMessage = async (id) => {
               include: {
                 user: {
                   select: {
-                    name: true,
+                    username: true,
                     email: true,
                     picture: true,
                     status: true,
@@ -58,7 +58,7 @@ const getConvoMessages = async (convo_id) => {
       include: {
         sender: {
           select: {
-            name: true,
+            username: true,
             picture: true,
             email: true,
             status: true,

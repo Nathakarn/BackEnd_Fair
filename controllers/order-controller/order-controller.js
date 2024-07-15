@@ -37,20 +37,36 @@ module.exports.getorderById = tryCatch(async (req, res) => {
     console.log(req.user.user_id)
 });
 
+
 module.exports.createOrder = tryCatch(async (req, res) => {
-    const { payment_method } = req.body;
+    const { user_id, cart_id } = req.body;
     console.log(req.body);
 
-    try {
+    const order = await prisma.order.findMany({
+        where: { user_id: user_id }
+    })
+    if (!order) {
         await prisma.order.create({
             data: {
-                payment_method
+                user_id: user_id,
+                cart_id: cart_id
             }
-        });
-        res.json('create ok');
-    } catch (error) {
-        console.error(error);
-        res.status(409).json({ message: "Error creating order" });
+        })
+
+    } else {
+        try {
+            await prisma.order.updateMany({
+                where: {
+                    user_id: user_id,
+                },
+                data: { cart_id: cart_id }
+            });
+            res.json('create ok');
+        } catch (error) {
+            console.error(error);
+            res.status(409).json({ message: "Error creating order" });
+        }
     }
+
 });
 

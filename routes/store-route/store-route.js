@@ -4,8 +4,8 @@ const  storeRouter = express.Router();
 const storeController =require('../../controllers/store-controller/store-controller')
 
 storeRouter.post('/', storeController.createStore)
-storeRouter.get('/', storeController.getStoreByUserId)
-storeRouter.put('/', storeController.updateStore)
-storeRouter.delete('/', storeController.deleteStore)
+storeRouter.get('/:id', storeController.getStoreByUserId)
+storeRouter.put('/:id', storeController.updateStore)
+storeRouter.delete('/:id', storeController.deleteStore)
 
 module.exports = storeRouter;
