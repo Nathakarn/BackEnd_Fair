@@ -1,20 +1,20 @@
-// utils/email.js
+
 
 const nodemailer = require("nodemailer");
 
-// Configure Nodemailer transporter for Gmail
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'noreply.fair@gmail.com', // Replace with your Gmail address
-    pass: 'umjiicrunyvuinld', // Replace with your Gmail password or app password
+    user: 'noreply.fair@gmail.com', 
+    pass: 'umjiicrunyvuinld', 
   },
 });
 
 async function sendVerificationEmail(email, url) {
   try {
     await transporter.sendMail({
-      from: '"Your App Name" <noreply.fair@gmail.com>', // Replace with your app name and Gmail address
+      from: '"Fair E-commerce" <noreply.fair@gmail.com>', 
       to: email,
       subject: "Email Verification",
       text: `Please verify your email by clicking the following link: ${url}`,
