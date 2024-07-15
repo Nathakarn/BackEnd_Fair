@@ -14,7 +14,6 @@ const userRoute = require("./routes/chatRoute/userRoute");
 const searchRoute = require("./routes/searchRoute/searchRoute");
 const notFound = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error-middleware");
-const reviewRoute = require("./routes/review-routes/review-route");
 const authRoute = require("./routes/auth-route/auth-route");
 
 //middlewares
@@ -44,8 +43,6 @@ app.use("/message", messageRoute);
 app.use("/user", userRoute);
 app.use("/search", searchRoute);
 
-//review
-app.use("/review", reviewRoute);
 
 // not found
 app.use(notFound);
