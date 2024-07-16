@@ -1,0 +1,73 @@
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
+
+const userData = [
+    {user_id: 1 ,username: 'bob',password: '12346',email: 'bob@mail.com',phone_number: '0222222222'},
+    {user_id: 2, username: 'alice',password: 'password123',email: 'alice@mail.com',phone_number: '0333333333'},
+    {user_id: 3,username: 'charlie',password: 'securepass',email: 'charlie@mail.com',phone_number: '0444444444'}
+]
+
+const storetData = [
+    {store_id : 1,store_name: 'lanaPhone',store_description: 'All Apple Here',user_id: 1},
+    {store_id : 2,store_name: 'TechGadgets',store_description: 'Your source for all tech gadgets!',user_id: 2},
+    {store_id : 3,store_name: 'FashionTrends',store_description: 'Stay stylish with our latest fashion trends!',user_id: 3},
+    {store_id : 4,store_name: 'Bookworms',store_description: 'Explore the world of books!',user_id: 1},
+    {store_id : 5,store_name: 'HomeDecor',store_description: 'Make your home beautiful with our decor items!',user_id: 2}
+]
+
+const productData = [
+    {
+        product_id: 1,
+        product_title: "HAVIT HV-G92 Gamepad",
+        description: "Enjoy gaming with the HAVIT HV-G92 Gamepad, designed for comfort and precision. Compatible with various gaming platforms, it offers responsive controls and ergonomic design for extended gaming sessions.",
+        price: 100,
+        real_price: 120,
+        category: "Gaming",
+        product_type:"Normal",
+        product_pic: "https://images.pexels.com/photos/371924/pexels-photo-371924.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        store_id : 1
+      },
+      {
+        product_id: 2,
+        product_title: "AK-900 Wired Keyboard",
+        description: "The AK-900 Wired Keyboard combines durability with performance, ideal for both gaming and professional use. With responsive keys and a sleek design, it enhances your typing experience.",
+        price: 1000,
+        real_price: 1160,
+        category: "Computer Accessories",
+        product_type:"Normal",
+        product_pic: "https://images.pexels.com/photos/459762/pexels-photo-459762.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        store_id : 1
+      },
+      {
+        product_id: 3,
+        product_title: "IPS LCD Gaming Monitor",
+        description: "Experience immersive gaming with the IPS LCD Gaming Monitor. Featuring vibrant colors and smooth visuals, it enhances your gaming setup. Its adjustable stand allows for comfortable viewing angles.",
+        price: 300,
+        real_price: 400,
+        category: "Monitors",
+        product_type:"PreOrder",
+        product_pic: "https://images.pexels.com/photos/164827/pexels-photo-164827.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        store_id : 2
+      },
+      {
+        product_id: 4,
+        product_title: "S-Series Comfort Chair",
+        description: "The S-Series Comfort Chair offers ergonomic support and style for extended sitting sessions. With adjustable features and a breathable design, it ensures comfort throughout the day.",
+        price: 300,
+        real_price: 400,
+        category: "Furniture",
+        product_type:"PreOrder",
+        product_pic: "https://images.pexels.com/photos/724921/pexels-photo-724921.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        store_id : 2
+      },
+
+  
+]
+
+async function run() {
+    await prisma.user.createMany({data: userData})
+    await prisma.store.createMany({data: storetData})
+    await prisma.product.createMany({data: productData})
+}
+
+run()
