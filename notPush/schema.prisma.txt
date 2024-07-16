@@ -59,6 +59,7 @@ model Order {
   shipping_status Status  @default(PENDING)
   payment_method  String? @db.VarChar(100)
   address_id      Int?
+  quantity        String? @db.VarChar(100)
   address         Address? @relation(fields: [address_id], references: [address_id])
   user_id         Int?
   user            User?    @relation(fields: [user_id], references: [user_id])
