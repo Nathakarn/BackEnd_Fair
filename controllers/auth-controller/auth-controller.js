@@ -111,7 +111,7 @@ module.exports.forgotPassword = tryCatch(async (req, res, next) => {
   }
 
   const resetToken = uuidv4();
-  const resetUrl = `http://localhost:8080/auth/reset-password?token=${resetToken}`;
+  const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
 
   await prisma.user.update({
     where: { user_id: user.user_id },
