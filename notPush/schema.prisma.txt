@@ -81,7 +81,6 @@ enum Status {
 //-------nut
 model Store {
   store_id          Int         @id @default(autoincrement())
-  opening_date      DateTime    @db.Date
   store_name        String      @unique @db.VarChar(30)
   store_description String      @db.Text
   store_profilepic  String?     @map("profile_img_url")
