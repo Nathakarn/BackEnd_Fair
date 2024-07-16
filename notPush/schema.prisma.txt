@@ -24,9 +24,8 @@ model User {
   phone_number  String      @db.VarChar(10)
   profile_pic   String?     @map("img_url")
   order         Order[]      //เพิ่ม By.Q
-  cart          Cart[]      //เพิ่ม By.Q
   store         Store[]      //add By.NUT
-  review        Review[]     //add by.win
+  // review        Review[]     //add by.win
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   
@@ -53,6 +52,7 @@ model Address {
   order     Order[] 
 }
 
+
 model Order {
   order_id        Int     @id @default(autoincrement())
   payment_status  Status  @default(PENDING)
@@ -62,37 +62,15 @@ model Order {
   address         Address? @relation(fields: [address_id], references: [address_id])
   user_id         Int?
   user            User?    @relation(fields: [user_id], references: [user_id])
-  cart_id         Int?      
-  cart            Cart[]
-  product         Product[] 
-  review          Review[] // add by win
-}
-
-enum Status {
-  PENDING
-  COMPLETED
-  FAILED
-}
-
-model Cart {
-  cart_id         Int         @id @default(autoincrement())
-  user_id         Int
-  user            User        @relation(fields: [user_id], references: [user_id])
-  order_id        Int
-  order           Order       @relation(fields: [order_id], references: [order_id])
-
-  cartitem_id         Int
-  cartitem        CartItem[]    
-}
-
-model CartItem {
-  cartitem_id  Int      @id @default(autoincrement())
   product_id   Int
   product      Product  @relation(fields: [product_id], references: [product_id])
-  quantity     Int
+}
 
-  cart_id      Int  
-  cart         Cart    @relation(fields: [cart_id], references: [cart_id])
+
+enum Status {
+  PENDING 
+  COMPLETED
+  FAILED
 }
 
 //------qq-end
@@ -122,13 +100,9 @@ model Product {
   product_type     ProductType
   store_id         Int
   store            Store       @relation(fields: [store_id], references: [store_id])
-  
-  cartitem_id      Int          //เพิ่ม By.Q
-  cartItems        CartItem[]   //เพิ่ม By.Q
+  order            Order[]    //เพิ่ม By.Q  
+  // review          Review[] // add by win
 
-  order            Order? @relation(fields: [order_id], references: [order_id])  //เพิ่ม By.Qแก้ไขลบs
-  order_id         Int?       //เพิ่ม By.Q
-  review          Review[] // add by win
 }
 
 enum ProductType {
@@ -183,19 +157,19 @@ model UserConversation {
 }
 
 //--------- win -----------// 
-model Review {
-  review_id Int    @id @default(autoincrement())
-  content   String @db.Text
-  rating    Int
+// model Review {
+//   review_id Int    @id @default(autoincrement())
+//   content   String @db.Text
+//   rating    Int
   
-  order_id  Int
-  order     Order?       @relation(fields: [order_id], references: [order_id])
+//   order_id  Int
+//   order     Order?       @relation(fields: [order_id], references: [order_id])
 
-  product_id Int
-  product   Product?     @relation(fields: [product_id], references : [product_id])
+//   product_id Int
+//   product   Product?     @relation(fields: [product_id], references : [product_id])
 
-  user_id Int
-  user     User?         @relation(fields: [user_id], references: [user_id])
-}
+//   user_id Int
+//   user     User?         @relation(fields: [user_id], references: [user_id])
+// }
 
 // ---------- win -------------//
