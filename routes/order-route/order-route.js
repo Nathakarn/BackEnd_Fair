@@ -8,7 +8,7 @@ const orderRoute = express.Router()
 
 // orderRoute.get('/', getallorder )
 orderRoute.get('/', getorderById)
-orderRoute.post('/', createOrder)
+orderRoute.post('/:id', createOrder)
 orderRoute.delete('/:id', deleteorderById )
 
 
