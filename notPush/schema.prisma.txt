@@ -81,7 +81,7 @@ enum Status {
 //-------nut
 model Store {
   store_id          Int         @id @default(autoincrement())
-  store_name        String      @unique @db.VarChar(100)
+  store_name        String      @unique @db.VarChar(30)
   store_description String      @db.Text
   store_profilepic  String?     @map("profile_img_url")
   store_cover       String?     @map("cover_img_url")
@@ -92,7 +92,7 @@ model Store {
 
 model Product {
   product_id       Int         @id @default(autoincrement())
-  product_title    String      @unique @db.VarChar(30)
+  product_title    String      @unique @db.VarChar(100)
   description      String      @db.Text
   price            Float       @db.Float
   real_price       Float       @db.Float
