@@ -3,7 +3,7 @@ const prisma = require("../../models");
 
 module.exports.createStore = tryCatch(async (req, res, next) => {
   const {
-    opening_date,
+    // opening_date,
     store_name,
     store_description,
     store_profilepic,
@@ -20,7 +20,7 @@ module.exports.createStore = tryCatch(async (req, res, next) => {
   try {
     const rs = await prisma.store.create({
       data: {
-        opening_date: formattedOpeningDate,
+        // opening_date: formattedOpeningDate,
         store_name,
         store_description,
         store_profilepic,
@@ -54,7 +54,7 @@ module.exports.getStoreByUserId =tryCatch(async (req,res) =>{
 
 module.exports.updateStore = tryCatch(async (req, res, net) => {
   const {
-    opening_date,
+    // opening_date,
     store_name,
     store_description,
     store_profilepic,
@@ -67,7 +67,7 @@ module.exports.updateStore = tryCatch(async (req, res, net) => {
   const rs = await prisma.store.update({
     where: { store_id: Number(id) },
     data: {
-      opening_date,
+      // opening_date,
       store_name,
       store_description,
       store_profilepic,

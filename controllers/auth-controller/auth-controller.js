@@ -3,7 +3,7 @@ const customError = require("../../utils/customError");
 const tryCatch = require("../../utils/tryCatch");
 const prisma = require("../../models");
 const { v4: uuidv4 } = require("uuid");
-const { sendVerificationEmail } = require("../../utils/email");
+const { sendVerificationEmail, sendResetPasswordEmail } = require("../../utils/email");
 const jwt = require("jsonwebtoken");
 const path = require('path');
 
@@ -91,3 +91,71 @@ module.exports.getMe = (req,res,next) => {
   res.json({user : req.user})
 }
 
+
+
+
+
+
+
+module.exports.forgotPassword = tryCatch(async (req, res, next) => {
+  const { username, email } = req.body;
+
+  if (!(username && email)) {
+    throw customError("Please provide both username and email", 400);
+  }
+
+  const user = await prisma.user.findUnique({ where: { username, email } });
+
+  if (!user) {
+    throw customError("User not found", 404);
+  }
+
+  const resetToken = uuidv4();
+  const resetUrl = `http://localhost:8080/auth/reset-password?token=${resetToken}`;
+
+  await prisma.user.update({
+    where: { user_id: user.user_id },
+    data: {
+      resetPasswordToken: resetToken,
+      resetPasswordExpires: new Date(Date.now() + 3600000) // 1 hour expiry
+    }
+  });
+
+  await sendResetPasswordEmail(user.email, resetUrl);
+
+  res.status(200).json({ msg: "Password reset email sent. Please check your email." });
+});
+
+
+module.exports.resetPassword = tryCatch(async (req, res, next) => {
+  const { token, newPassword, confirmNewPassword } = req.body;
+
+  if (!(token && newPassword && confirmNewPassword)) {
+    throw customError("Please provide all required fields", 400);
+  }
+
+  if (newPassword !== confirmNewPassword) {
+    throw customError("Passwords do not match", 400);
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { resetPasswordToken: token, resetPasswordExpires: { gt: new Date() } }
+  });
+
+  if (!user) {
+    throw customError("Invalid or expired token", 400);
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  await prisma.user.update({
+    where: { user_id: user.user_id },
+    data: {
+      password: hashedPassword,
+      resetPasswordToken: null,
+      resetPasswordExpires: null
+    }
+  });
+
+  res.status(200).json({ msg: "Password has been reset successfully" });
+});

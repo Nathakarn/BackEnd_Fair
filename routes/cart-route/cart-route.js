@@ -6,7 +6,7 @@ const { deleteCartItem } = require('../../controllers/cart-controller/cart-contr
 const cartRoute = express.Router()
 
 cartRoute.get('/:cart_id', getIdCart )
-cartRoute.delete('/item/:product_id', deleteCartItem);
+// cartRoute.delete('/item/:product_id', deleteCartItem);
 
 
 
