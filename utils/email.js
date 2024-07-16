@@ -27,4 +27,20 @@ async function sendVerificationEmail(email, url) {
   }
 }
 
-module.exports = { sendVerificationEmail };
+async function sendResetPasswordEmail(email, url) {
+  try {
+    await transporter.sendMail({
+      from: '"Fair E-commerce" <noreply.fair@gmail.com>',
+      to: email,
+      subject: "Password Reset",
+      text: `You can reset your password by clicking the following link: ${url}`,
+      html: `<a href="${url}">Reset Password</a>`,
+    });
+    console.log("Reset password email sent to:", email);
+  } catch (error) {
+    console.error("Error sending reset password email:", error);
+    throw new Error("Could not send reset password email");
+  }
+}
+
+module.exports = { sendVerificationEmail, sendResetPasswordEmail };
