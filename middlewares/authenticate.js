@@ -4,9 +4,6 @@ const customError = require("../utils/customError")
 const tryCatch = require("../utils/tryCatch")
 require('dotenv').config();
 
-
-
-
 module.exports = tryCatch(async (req, res, next) => {
   const authorization = req.headers.authorization
   if(!authorization || !authorization.startsWith('Bearer ')) {
