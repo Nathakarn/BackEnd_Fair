@@ -31,6 +31,8 @@ model User {
   
   verificationToken String? @unique //add by tao
   verified          Boolean  @default(false) //add by tao
+  resetPasswordToken  String?     @unique //add by tao
+  resetPasswordExpires DateTime? //add by tao
 
   // Relations
   conversations UserConversation[]
