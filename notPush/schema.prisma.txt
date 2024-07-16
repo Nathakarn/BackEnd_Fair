@@ -20,9 +20,8 @@ model User {
   password      String      @db.VarChar(72)
   email         String      @db.VarChar(99)
   picture       String      @default("https://res.cloudinary.com/dkd5jblv5/image/upload/v1675976806/Default_ProfilePicture_gjngnb.png")
-  status        String      @default("Hey there ! I am using whatsapp")
+  status        String      @default("Hey there ! I am using fair message")
   phone_number  String      @db.VarChar(10)
-  profile_pic   String?     @map("img_url")
   order         Order[]      //เพิ่ม By.Q
   store         Store[]      //add By.NUT
   // review        Review[]     //add by.win
@@ -39,7 +38,6 @@ model User {
   messages      Message[]
   adminOf       Conversation[] @relation("AdminRelation")
 }
-
 
 ///--------qqqq
 model Address {
