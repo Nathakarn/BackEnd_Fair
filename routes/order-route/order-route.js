@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require("express");
 // const { getallorder } = require('../../controllers/order-controller/order-controller')
 const { createOrder, deleteorderById } = require('../../controllers/order-controller/order-controller')
 const { getorderById } = require('../../controllers/order-controller/order-controller')
@@ -11,6 +11,4 @@ orderRoute.get('/', getorderById)
 orderRoute.post('/:id', createOrder)
 orderRoute.delete('/:id', deleteorderById )
 
-
-
-module.exports = orderRoute
+module.exports = orderRoute;

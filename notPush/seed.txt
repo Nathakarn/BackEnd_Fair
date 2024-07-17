@@ -1,11 +1,14 @@
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
+const bcrypt = require('bcryptjs')
+
+const hashedPassword = bcrypt.hashSync('123456', 10)
 
 const userData = [
-  {user_id: 1,username: "Jojo",password: "12346",email: "chaiwiwatmixx@gmail.com", phone_number: "0222222222"},
-  {user_id: 2,username: 'asdpoop4',password:'123456', email: 'asdpoop4@mail.com',phone_number: '0333333333'},
-  {user_id: 3 ,username: 'bob',password: '12346',email: 'nathakarn49@mail.com',phone_number: '0333333333'},
-  { user_id: 4, username: 'win', password: '12346', email: 'pranklang@gmail.com', phone_number: '0999999999' }
+  {user_id: 1,username: "Jojo",password: hashedPassword,email: "chaiwiwatmixx@gmail.com", phone_number: "0222222222" ,verified: true},
+  {user_id: 2,username: 'asdpoop4',password:hashedPassword, email: 'asdpoop4@mail.com',phone_number: '0333333333',verified: true},
+  {user_id: 3 ,username: 'bob',password: hashedPassword,email: 'nathakarn49@mail.com',phone_number: '0333333333',verified: true},
+  { user_id: 4, username: 'win', password: hashedPassword, email: 'pranklang@gmail.com', phone_number: '0999999999' ,verified: true}
 ]
 
 const storeData = [
@@ -667,7 +670,7 @@ const productData = [
     category: "fashion",
     product_type: "PreOrder",
     product_pic:
-      "https://www.pexels.com/th-th/photo/1381553/",
+      "https://images.pexels.com/photos/847414/pexels-photo-847414.jpeg?auto=compress&cs=tinysrgb&w=600",
     store_id: 3,
   },
   {
@@ -715,7 +718,7 @@ const productData = [
     category: "fashion",
     product_type: "PreOrder",
     product_pic:
-      "https://www.pexels.com/th-th/photo/2119220/",
+      "https://images.pexels.com/photos/3076770/pexels-photo-3076770.jpeg?auto=compress&cs=tinysrgb&w=600",
     store_id: 3,
   },
   {
