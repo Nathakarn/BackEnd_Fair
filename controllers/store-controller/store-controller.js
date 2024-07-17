@@ -11,6 +11,8 @@ module.exports.createStore = tryCatch(async (req, res, next) => {
 
   } = req.body;
 
+  console.log(user_id);
+
   try {
     const rs = await prisma.store.create({
       data: {
@@ -23,6 +25,7 @@ module.exports.createStore = tryCatch(async (req, res, next) => {
       },
     });
     res.json({ msg: 'Store created successfully', result: rs });
+    console.log(rs);
   } catch (error) {
     console.error('Error creating store', error);
     if (error.code === 'P2002') {
