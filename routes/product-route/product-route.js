@@ -6,9 +6,13 @@ const productController = require("../../controllers/product-controller/product-
 productRoute.post("/", productController.createProduct);
 productRoute.get("/", productController.getAllProducts);
 productRoute.get("/:id", productController.getProductById);
-productRoute.put("/:id" , productController.updateProduct);
-productRoute.delete('/:id', productController.deleteProduct);
+productRoute.put("/:id", productController.updateProduct);
+productRoute.delete("/:id", productController.deleteProduct);
 
-productRoute.get('/price-desc', productController.getProductsByPriceDesc);
-productRoute.get('/category/:category', productController.getProductsByCategory);
+productRoute.get("/price-desc", productController.getProductsByPriceDesc);
+productRoute.get(
+  "/category/:category",
+  productController.getProductsByCategory
+);
+productRoute.get("/user/:store_id", productController.getUser);
 module.exports = productRoute;

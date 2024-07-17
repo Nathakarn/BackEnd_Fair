@@ -23,25 +23,20 @@ app.use(express.json());
 
 //service
 
-
 //auth
 app.use("/auth", authRoute);
 
-
-
 app.use("/address", addressRoute);
-app.use("/order",authenticate, orderRouter);
-
-
+app.use("/order", authenticate, orderRouter);
 
 app.use("/product", productRoute);
 app.use("/store", storeRouter);
 
 // service chatapp
-app.use("/conversation", conversationRoute);
-app.use("/message", messageRoute);
-app.use("/user", userRoute);
-app.use("/search", searchRoute);
+app.use("/conversation", authenticate, conversationRoute);
+app.use("/message", authenticate, messageRoute);
+app.use("/user", authenticate, userRoute);
+app.use("/search", authenticate, searchRoute);
 
 //review
 // app.use("/review", reviewRoute);
