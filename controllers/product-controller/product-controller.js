@@ -40,40 +40,17 @@ module.exports.getAllProducts = tryCatch(async (req, res) => {
   res.json(rs);
 });
 
-module.exports.getProductById = tryCatch(async (req, res) => {
-  const { id } = req.params;
-  const rs = await prisma.product.findUnique({
-    where: { product_id: Number(id) },
-  });
-  if (!rs) {
-    return res.status(404).json({ msg: "Product not found" });
-  }
-  res.json(rs);
-});
+module.exports.getProductsByStoreId = tryCatch(async (req, res) => {
+  const { store_id } = req.params;
 
-// module.exports.getProductById = tryCatch(async (req, res) => {
-//   const { id } = req.params; // Assuming id is passed as a URL parameter
-//   const rs = await prisma.product.findUnique({
-//     where: { product_id: Number(id) },
-//     include: {
-//       store: {
-//         select: {
-//           user: {
-//             select: {
-//               user_id: true,
-//               username: true, // You can select more fields if needed
-//             },
-//           },
-//         },
-//       },
-//     },
-//   });
-//   if (!rs) {
-//     return res.status(404).json({ msg: "Product not found" });
-//   }
-//   console.log("rs = ", rs)
-//   res.json(rs);
-// });
+  const products = await prisma.product.findMany({
+    where: {
+      store_id: Number(store_id), // Ensure store_id is correctly passed and converted to number
+    },
+  });
+
+  res.json(products);
+});
 
 module.exports.updateProduct = tryCatch(async (req, res) => {
   const { id } = req.params;
@@ -107,11 +84,15 @@ module.exports.updateProduct = tryCatch(async (req, res) => {
 
 module.exports.deleteProduct = tryCatch(async (req, res, next) => {
   const { id } = req.params;
-
-  const rs = await prisma.product.delete({
-    where: { product_id: Number(id) },
-  });
-  res.json(rs);
+  try {
+    const rs = await prisma.product.delete({
+      where: { product_id: Number(id) }
+    });
+    res.json({ msg: 'product deleted successfully', result: rs });
+  } catch (error) {
+    console.error('Error deleting product', error);
+    next(error);
+  }
 });
 
 // getProductsByPriceDesc
