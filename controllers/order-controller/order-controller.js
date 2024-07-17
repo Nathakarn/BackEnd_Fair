@@ -14,11 +14,15 @@ module.exports.getorderById = tryCatch(async (req, res) => {
 
 module.exports.createOrder = tryCatch(async (req, res) => {
     const { id } = req.params;
+    const { quantity } = req.body;
     console.log("create order", req.params);
+    console.log("create quantity", req.body);
+    console.log(req.user)
     await prisma.order.create({
         data: {
             user_id: req.user.user_id,
-            product_id: +id,            
+            product_id: +id,  
+            quantity:+quantity.quantity
         }
     })
 
