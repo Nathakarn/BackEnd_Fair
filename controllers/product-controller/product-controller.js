@@ -63,6 +63,7 @@ module.exports.updateProduct = tryCatch(async (req, res) => {
     product_pic,
     product_video,
     product_type,
+    store_id,
   } = req.body;
 
   const rs = await prisma.product.update({
