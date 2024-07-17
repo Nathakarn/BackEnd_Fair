@@ -12,15 +12,11 @@ module.exports.createStore = tryCatch(async (req, res, next) => {
     product_id
   } = req.body;
  
-  // Convert opening_date from DD/MM/YYYY to ISO-8601 format
-  const [day, month, year] = opening_date.split('/');
-  const formattedOpeningDate = new Date(`${year}-${month}-${day}`).toISOString();
 
   // validation
   try {
     const rs = await prisma.store.create({
       data: {
-        // opening_date: formattedOpeningDate,
         store_name,
         store_description,
         store_profilepic,
@@ -43,7 +39,7 @@ module.exports.createStore = tryCatch(async (req, res, next) => {
 module.exports.getStoreByUserId =tryCatch(async (req,res) =>{
   const { id } = req.params;
   const rs = await prisma.store.findMany({
-    where: { user_id: Number(id) }
+    where: { user_id: id }
   });
   if (!rs) {
     return res.status(404).json({ msg: "store not found" });
@@ -54,18 +50,16 @@ module.exports.getStoreByUserId =tryCatch(async (req,res) =>{
 
 module.exports.updateStore = tryCatch(async (req, res, net) => {
   const {
-    // opening_date,
     store_name,
     store_description,
     store_profilepic,
     store_cover,
   } = req.body;
-  // Convert opening_date to ISO-8601 format
-  const formattedOpeningDate = new Date(opening_date).toISOString();
+
 
   // validation
   const rs = await prisma.store.update({
-    where: { store_id: Number(id) },
+    where: { store_id: id },
     data: {
       // opening_date,
       store_name,
@@ -80,7 +74,7 @@ module.exports.deleteStore = tryCatch(async(req,res,next) =>{
     const {id} = req.params
   
     const rs = await prisma.store.delete({
-      where: { store_id: Number(id) }  
+      where: { store_id: id }  
     })
     res.json(rs)
   })
