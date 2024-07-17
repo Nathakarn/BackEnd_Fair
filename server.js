@@ -51,14 +51,3 @@ const port = process.env.PORT || 8080;
 app.listen(port, () => console.log("Server on", port));
 
 console.log(port);
-
-// Sample data to simulate stores
-const stores = [
-    { id: 1, name: 'Store 1', description: 'Description 1' },
-    { id: 2, name: 'Store 2', description: 'Description 2' },
-];
-
-// Route to get all stores
-app.get('/store', (req, res) => {
-    res.json(stores);
-});
