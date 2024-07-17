@@ -15,6 +15,8 @@ const errorMiddleware = require("./middlewares/error-middleware");
 // const reviewRoute = require("./routes/review-routes/review-route");
 const authRoute = require("./routes/auth-route/auth-route");
 const authenticate = require("./middlewares/authenticate");
+const { Server } = require("socket.io");
+const SocketServer = require("./SocketServer");
 
 //middlewares
 app.use(cors());
@@ -36,7 +38,7 @@ app.use("/store", storeRouter);
 app.use("/conversation", authenticate, conversationRoute);
 app.use("/message", authenticate, messageRoute);
 app.use("/user", authenticate, userRoute);
-app.use("/search", authenticate, searchRoute);
+app.use("/search", searchRoute);
 
 //review
 // app.use("/review", reviewRoute);
@@ -48,6 +50,18 @@ app.use(notFound);
 app.use(errorMiddleware);
 
 const port = process.env.PORT || 8080;
-app.listen(port, () => console.log("Server on", port));
+let server;
+server = app.listen(port, () => console.log("Server on", port));
 
-console.log(port);
+//socket io
+const io = new Server(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: "http://localhost:5173",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("socket io connected successfully.");
+  SocketServer(socket, io);
+});
