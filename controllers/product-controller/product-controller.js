@@ -13,8 +13,9 @@ module.exports.createProduct = tryCatch(async (req, res, next) => {
     product_pic,
     product_video,
     product_type,
-    store_id,
   } = req.body;
+
+  const { store_id } = req.params; // รับ store_id จาก params
 
   // validation
   const rs = await prisma.product.create({
@@ -27,18 +28,31 @@ module.exports.createProduct = tryCatch(async (req, res, next) => {
       product_pic,
       product_video,
       product_type,
-      store_id,
+      store_id: Number(store_id), // แปลง store_id เป็น number ถ้าจำเป็น
     },
   });
 
   res.json({ msg: "create Product done", result: rs });
 });
 
+
 //getAllProducts
 module.exports.getAllProducts = tryCatch(async (req, res) => {
   const rs = await prisma.product.findMany();
   res.json(rs);
 });
+
+// module.exports.getProductsById = tryCatch(async (req, res) => {
+//   const { product_id } = req.params;
+
+//   const product = await prisma.product.findUnique({
+//     where: {
+//       product_id: Number(product_id), 
+//     },
+//   });
+
+//   res.json(product);
+// });
 
 module.exports.getProductsByStoreId = tryCatch(async (req, res) => {
   const { store_id } = req.params;
@@ -76,7 +90,6 @@ module.exports.updateProduct = tryCatch(async (req, res) => {
       product_pic,
       product_video,
       product_type,
-      store_id,
     },
   });
   res.json(rs);
@@ -116,6 +129,23 @@ module.exports.getProductsByCategory = tryCatch(async (req, res) => {
   res.json(rs);
 });
 
+// getProductsByProductType
+module.exports.getProductsByProductType = tryCatch(async (req, res) => {
+  const { product_type } = req.params;
+
+  // Validate that product_type is either 'Normal' or 'PreOrder'
+  if (!['Normal', 'PreOrder'].includes(product_type)) {
+    return res.status(400).json({ msg: 'Invalid product_type' });
+  }
+
+  const rs = await prisma.product.findMany({
+    where: {
+      product_type: product_type,
+    },
+  });
+
+  res.json(rs);
+});
 // getuserid
 module.exports.getUser = tryCatch(async (req, res) => {
   const { store_id } = req.params;
